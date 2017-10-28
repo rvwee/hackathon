@@ -60,19 +60,23 @@
                 }
             }
 
-            foreach (var point in points[Settings.MyBotId])
-                yield return new KillMove(point);
-
-            if (LivingCells[Settings.EnemyBotId] <= 5)
+            if (LivingCells[Settings.EnemyBotId] <= 5 && LivingCells[Settings.MyBotId] > 10)
+            {
                 foreach (var point in points[Settings.EnemyBotId])
                     yield return new KillMove(point);
-
-            bool canBirth = points[Settings.MyBotId].Count > 1 && points[(int)Celltype.Dead].Count > 0;
-            if (canBirth)
+            }
+            else
             {
-                for (int i = 0; i < StartBirthCount; i++)
+                foreach (var point in points[Settings.MyBotId])
+                    yield return new KillMove(point);
+
+                bool canBirth = points[Settings.MyBotId].Count > 1 && points[(int)Celltype.Dead].Count > 0;
+                if (canBirth)
                 {
-                    yield return GenerateBirthMove(Settings.MyBotId, points);
+                    for (int i = 0; i < StartBirthCount; i++)
+                    {
+                        yield return GenerateBirthMove(Settings.MyBotId, points);
+                    }
                 }
             }
         }
