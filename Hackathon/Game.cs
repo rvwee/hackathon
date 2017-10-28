@@ -63,8 +63,9 @@
             foreach (var point in points[Settings.MyBotId])
                 yield return new KillMove(point);
 
-            foreach (var point in points[Settings.EnemyBotId])
-                yield return new KillMove(point);
+            if (LivingCells[Settings.EnemyBotId] <= 5)
+                foreach (var point in points[Settings.EnemyBotId])
+                    yield return new KillMove(point);
 
             bool canBirth = points[Settings.MyBotId].Count > 1 && points[(int)Celltype.Dead].Count > 0;
             if (canBirth)
