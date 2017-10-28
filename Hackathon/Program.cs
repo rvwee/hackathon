@@ -128,6 +128,17 @@
 
         private static void PerformAction(int timeLeft)
         {
+            if (timeLeft > 8000)
+                Game.StartBirthCount = 650;
+            else if (timeLeft > 6000)
+                Game.StartBirthCount = 500;
+            else if (timeLeft > 4000)
+                Game.StartBirthCount = 400;
+            else if (timeLeft > 2000)
+                Game.StartBirthCount = 300;
+            else if (timeLeft > 1000)
+                Game.StartBirthCount = 100;
+
             Console.WriteLine(Game.GetBestMove());
         }
     }

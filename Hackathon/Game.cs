@@ -20,7 +20,7 @@
         public static Celltype[,] Board { get; set; }
         public static int[] LivingCells { get; set; }
 
-        public static int StartBirthCount = 250;
+        public static int StartBirthCount = 550;
         public static int PathCount = 1;
         public static int PathDepth = 15;
 
