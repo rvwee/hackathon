@@ -7,15 +7,18 @@
     {
         public Game.Celltype[,] Board { get; set; }
         private Game.Celltype[,] NewBoard { get; set; }
+        private int[] LivingCells { get; set; }
 
-        public Path(Game.Celltype[,] board, BaseMove initialMove)
+        public Path(Game.Celltype[,] board, int[] livingCells, BaseMove initialMove)
         {
+            LivingCells = new[] {livingCells[0], livingCells[1]};
             Board = board.Clone() as Game.Celltype[,];
 
             if (initialMove is KillMove)
             {
                 var killMove = (KillMove) initialMove;
                 Board[killMove.Point.X, killMove.Point.Y] = Game.Celltype.Dead;
+                LivingCells[Settings.MyBotId] = LivingCells[Settings.MyBotId] - 1;
             }
             else if (initialMove is BirthMove)
             {
@@ -23,11 +26,15 @@
                 Board[birthMove.Kill1Point.X, birthMove.Kill1Point.Y] = Game.Celltype.Dead;
                 Board[birthMove.Kill2Point.X, birthMove.Kill2Point.Y] = Game.Celltype.Dead;
                 Board[birthMove.EmptyPoint.X, birthMove.EmptyPoint.Y] = (Game.Celltype)Settings.MyBotId;
+                LivingCells[Settings.MyBotId] = LivingCells[Settings.MyBotId] - 1;
             }
         }
 
-        public void Tick()
+        public bool Tick()
         {
+            if (LivingCells[Settings.MyBotId] == 0 || LivingCells[Settings.EnemyBotId] == 0)
+                return false;
+
             NewBoard = Board.Clone() as Game.Celltype[,];
 
             for (var x = 0; x < Settings.FieldWidth; x++)
@@ -50,25 +57,12 @@
             }
 
             Board = NewBoard;
+            return true;
         }
 
         public int GetScore()
         {
-            var score = 0;
-
-            for (var x = 0; x < Settings.FieldWidth; x++)
-            {
-                for (var y = 0; y < Settings.FieldHeight; y++)
-                {
-                    var field = Board[x, y];
-                    if (field == Game.Celltype.Dead)
-                        continue;
-
-                    score += (int) field == Settings.MyBotId ? 1 : -1;
-                }
-            }
-
-            return score;
+            return LivingCells[Settings.MyBotId] - LivingCells[Settings.EnemyBotId];
         }
 
         private int[] CountNeighbors(int x, int y)
@@ -99,11 +93,15 @@
 
         private void KillField(int x, int y)
         {
+            var playerId = (int)NewBoard[x, y];
+            LivingCells[playerId] = LivingCells[playerId] - 1;
+
             NewBoard[x, y] = Game.Celltype.Dead;
         }
 
         private void BirthField(int x, int y, int playerId)
         {
+            LivingCells[playerId] = LivingCells[playerId] + 1;
             NewBoard[x, y] = (Game.Celltype)playerId;
         }
     }

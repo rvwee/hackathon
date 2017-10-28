@@ -7,6 +7,8 @@
     {
         public static void Main(string[] args)
         {
+            Game.LivingCells = new int[2];
+
             // Increase the buffer size of the input stream
             Console.SetIn(new StreamReader(Console.OpenStandardInput(512)));
 
@@ -118,6 +120,10 @@
         private static void HandlePlayerUpdate(int id, string[] stringParts)
         {
             // todo: update player0 living_cells 50
+            if (stringParts[2] == "living_cells")
+            {
+                Game.LivingCells[id] = int.Parse(stringParts[3]);
+            }
         }
 
         private static void PerformAction(int timeLeft)

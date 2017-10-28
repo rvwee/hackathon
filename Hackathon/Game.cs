@@ -17,6 +17,7 @@
         }
 
         public static Celltype[,] Board { get; set; }
+        public static int[] LivingCells { get; set; }
 
         public static int StartBirthCount = 250;
         public static int PathCount = 1;
@@ -31,7 +32,7 @@
 
             foreach (var move in moves)
             {
-                move.Simulate(Board);
+                move.Simulate(Board, LivingCells);
                 var score = move.GetScore();
                 if (score > bestMoveScore)
                 {
