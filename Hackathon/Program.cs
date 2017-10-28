@@ -129,7 +129,7 @@
         private static void PerformAction(int timeLeft)
         {
             if (timeLeft > 8000)
-                Game.StartBirthCount = 650;
+                Game.StartBirthCount = 600;
             else if (timeLeft > 6000)
                 Game.StartBirthCount = 500;
             else if (timeLeft > 4000)

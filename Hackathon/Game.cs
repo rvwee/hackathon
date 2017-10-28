@@ -66,8 +66,9 @@
                 foreach (var point in points[Settings.EnemyBotId])
                     yield return new KillMove(point);
 
-                foreach (var point in Neighbours(points[Settings.EnemyBotId]))
-                    yield return GenerateNeightbourBirthMove(points[Settings.MyBotId], point);
+                if (LivingCells[Settings.EnemyBotId] == 4)
+                    foreach (var point in Neighbours(points[Settings.EnemyBotId]))
+                        yield return GenerateNeightbourBirthMove(points[Settings.MyBotId], point);
             }
             else
             {
