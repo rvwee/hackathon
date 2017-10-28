@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Remoting.Messaging;
     using Move;
 
@@ -64,6 +65,9 @@
             {
                 foreach (var point in points[Settings.EnemyBotId])
                     yield return new KillMove(point);
+
+                foreach (var point in Neighbours(points[Settings.EnemyBotId]))
+                    yield return GenerateNeightbourBirthMove(points[Settings.MyBotId], point);
             }
             else
             {
@@ -77,6 +81,23 @@
                     {
                         yield return GenerateBirthMove(Settings.MyBotId, points);
                     }
+                }
+            }
+        }
+
+        private static IEnumerable<Point> Neighbours(List<Point> enemyPoints)
+        {
+            int minX = Math.Max(enemyPoints.Min(p => p.X) - 1, 0), maxX = Math.Min(enemyPoints.Max(p => p.X) + 1, Settings.FieldWidth - 1);
+            int minY = Math.Max(enemyPoints.Min(p => p.Y) - 1, 0), maxY = Math.Min(enemyPoints.Max(p => p.Y) + 1, Settings.FieldHeight - 1);
+
+            for (int dy = minY; dy <= maxY; dy++)
+            {
+                for (int dx = minX; dx <= maxX; dx++)
+                {
+                    if (Board[dx, dy] != Celltype.Dead)
+                        continue;
+
+                    yield return new Point(dx, dy);
                 }
             }
         }
@@ -95,6 +116,20 @@
             var point2 = ownFields[random2];
                 
             return new BirthMove(emptyField, point1, point2);
+        }
+
+        private static BirthMove GenerateNeightbourBirthMove(List<Point> myPoints, Point emptyPoint)
+        {
+            var ownFields = new List<Point>(myPoints);
+
+            var random1 = Random.Next(ownFields.Count);
+            var point1 = ownFields[random1];
+            ownFields.RemoveAt(random1);
+
+            var random2 = Random.Next(ownFields.Count);
+            var point2 = ownFields[random2];
+
+            return new BirthMove(emptyPoint, point1, point2);
         }
     }
 }
