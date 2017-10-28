@@ -122,8 +122,7 @@
 
         private static void PerformAction(int timeLeft)
         {
-            Game.Tick();
-            Console.WriteLine("up");
+            Game.GetBestMove().Print();
         }
     }
 }
