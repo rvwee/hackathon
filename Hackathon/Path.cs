@@ -17,8 +17,10 @@
             if (initialMove is KillMove)
             {
                 var killMove = (KillMove) initialMove;
+                var killedId = (int)Board[killMove.Point.X, killMove.Point.Y];
                 Board[killMove.Point.X, killMove.Point.Y] = Game.Celltype.Dead;
-                LivingCells[Settings.MyBotId] = LivingCells[Settings.MyBotId] - 1;
+
+                LivingCells[killedId] = LivingCells[killedId] - 1;
             }
             else if (initialMove is BirthMove)
             {
@@ -62,6 +64,13 @@
 
         public int GetScore()
         {
+            if (LivingCells[Settings.MyBotId] == 0)
+                return -75;
+
+
+            if (LivingCells[Settings.EnemyBotId] == 0)
+                return 75;
+
             return LivingCells[Settings.MyBotId] - LivingCells[Settings.EnemyBotId];
         }
 
