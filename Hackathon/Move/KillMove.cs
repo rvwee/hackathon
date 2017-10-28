@@ -1,7 +1,5 @@
 ﻿namespace Hackathon.Move
 {
-    using System;
-
     public class KillMove : BaseMove
     {
         public KillMove(Point point)
@@ -11,14 +9,9 @@
 
         public Point Point { get; set; }
 
-        public override void Print()
+        public override string ToString()
         {
-            Console.WriteLine("Kill " + Point);
-        }
-
-        public override int GetScore()
-        {
-            throw new System.NotImplementedException();
+            return ("Kill " + Point);
         }
     }
 }

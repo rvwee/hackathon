@@ -1,7 +1,5 @@
 ﻿namespace Hackathon.Move
 {
-    using System;
-
     public class BirthMove : BaseMove
     {
         public BirthMove(Point empty, Point kill1, Point kill2)
@@ -15,14 +13,9 @@
         public Point Kill1Point { get; set; }
         public Point Kill2Point { get; set; }
 
-        public override void Print()
+        public override string ToString()
         {
-            Console.WriteLine("Birth " + EmptyPoint + " " + Kill1Point + " " + Kill2Point);
-        }
-
-        public override int GetScore()
-        {
-            throw new System.NotImplementedException();
+            return "Birth " + EmptyPoint + " " + Kill1Point + " " + Kill2Point;
         }
     }
 }

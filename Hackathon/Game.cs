@@ -6,7 +6,7 @@
 
     public static class Game
     {
-        private static readonly Random Random = new Random();
+        public static readonly Random Random = new Random();
 
         public enum Celltype
         {
@@ -16,11 +16,30 @@
         }
 
         public static Celltype[,] Board { get; set; }
-        private static Path Path { get; set; }
+
+        public static int StartMoveCount = 25;
+        public static int PathCount = 50;
+        public static int PathDepth = 20;
 
         public static BaseMove GetBestMove()
         {
-            return GenerateRandomMove(Settings.MyBotId, Board);
+            BaseMove bestMove = null;
+            int bestMoveScore = int.MinValue;
+            
+            for (var x = 0; x < StartMoveCount; x++)
+            {
+                var move = GenerateRandomMove(Settings.MyBotId, Board);
+                move.Simulate(Board);
+                var score = move.GetScore();
+                if (score > bestMoveScore)
+                {
+                    bestMove = move;
+                    bestMoveScore = score;
+                }
+            }
+
+            Console.Error.WriteLine("Performing move '" + bestMove + "' with score " + bestMoveScore);
+            return bestMove;
         }
 
         private static BaseMove GenerateRandomMove(int playerId, Celltype[,] board)
@@ -51,17 +70,6 @@
             }
 
             return new KillMove(points[playerId][Random.Next(points[playerId].Count)]);
-        }
-
-        public static void Tick()
-        {
-            Path = new Path(Board);
-            Path.Tick();
-            Path.Tick();
-            Path.Tick();
-            Path.Tick();
-            Path.Tick();
-            Board = Path.Board;
         }
     }
 }
