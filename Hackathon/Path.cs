@@ -64,11 +64,11 @@
 
         public int GetScore()
         {
-            if (LivingCells[Settings.MyBotId] == 0)
-                return -75;
-            
-            if (LivingCells[Settings.EnemyBotId] == 0)
-                return 75;
+            //if (LivingCells[Settings.MyBotId] == 0)
+            //    return -75;
+            //
+            //if (LivingCells[Settings.EnemyBotId] == 0)
+            //    return 75;
 
             return LivingCells[Settings.MyBotId] - LivingCells[Settings.EnemyBotId];
         }
